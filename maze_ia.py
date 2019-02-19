@@ -18,13 +18,23 @@ def distance(cur, goal):
 
 def get_meal(maze):
     meal = []
-    for x in range(len(maze)):
+    for x in range(1, len(maze)-1):
         for y in x:
-            if maze[x][y] == '!' or maze[x][y] == 'o':
+            if maze[x][y] == 'o':
                 meal.append([x,y])
             if maze[x][y] == 'A':
                 meal.insert([x, y])
     return meal
+
+def get_pos_nearest(pos_A, list_meal):
+    if distance(pos_A, list_meal[0]) > distance(pos_A, list_meal[1]):
+        return list_meal[1] if \
+                distance(pos_A, list_meal[2]) > distance(pos_A, list_meal[1])
+                else list_meal[2]
+    else:
+        return list_meal[0] if \
+                distance(pos_A, list_meal[2]) > distance(pos_A, list_meal[0])
+                else list_meal[2]
 
 def get_maze():
     output = ''
@@ -39,6 +49,8 @@ def get_maze():
 
     return output.split('\n')[2:-1]
 
+def find_path (pos_A, pos):
+    pass
 
 if __name__ == '__main__':
     get_sring()
@@ -47,4 +59,8 @@ if __name__ == '__main__':
         meal = get_meal()
         start_x = maze[0][0]
         start_y = maze[0][1]
-        
+        meal.pop(0)
+        get_pos_nearest([start_x, start_y], meal)
+        move = find_path([start_x, start_y], get_pos_nearest([start_x, start_y], meal))
+        for x in move:
+            sys.stdin.write(x)
