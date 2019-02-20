@@ -5,16 +5,6 @@ import math
 from random import choice
 from find import *
 
-def get_sring():
-    data = sys.stdin.readline()
-    while data != '':
-        if "HELLO" in data:
-            sys.stdout.write('I AM A\n\n')
-        elif 'YOU' in data:
-            sys.stdout.write('OK\n\n')
-            return
-        data = sys.stdin.readline()
-
 # def distance(cur, goal):
 #     return math.sqrt((goal[0] - cur[0])**2 - (goal[1] - cur[1])**2)
 
@@ -30,8 +20,8 @@ def get_meal(maze):
                     start = [x, j]
             except:
                 continue
-    f = open('de', 'w')
-    f.write(str(start) + '\n' + str(meal))
+    f = open('de', 'a')
+    f.write('/n' + str(start) + '\n' + str(meal))
     return start , meal
 
 # def get_pos_nearest(pos_A, list_meal):
@@ -45,24 +35,21 @@ def get_meal(maze):
 #                 else list_meal[2]
 
 def get_maze():
-    output = ''
-    maze = input()
-    count = 0
-
-    while count < 4:
-        if ' ' not in maze:
-            count += 1
-        output += maze + '\n'
-        maze = input()
-    return output.split('\n')[2:-1]
+    board = []
+    while True:
+        k = sys.stdin.readline()
+        if k[0] != '#':
+            break
+        board.append(k)
+    return board
 
 def find(maze, pos_A, pos):
     list = find_path(maze, pos_A, pos)
-    f = open('debu', 'w')
-    f.write(str(list))
+    f = open('debu', 'a')
+    f.write(str(list) + '\n')
     current = pos_A
     output = []
-    for x in list:
+    for x in list[1:]:
         if x[0] > pos_A[0]:
             output.append('MOVE DOWN')
         elif x[0] < pos_A[0]:
@@ -75,14 +62,17 @@ def find(maze, pos_A, pos):
     return output
 
 if __name__ == '__main__':
-    get_sring()
+    data = sys.stdin.readline()
+    while data != '':
+        if 'MAZE' in data:
+            maze = get_maze()
+            start, meal = get_meal(maze)
+            move = find(maze, tuple(start), tuple(meal[1]))
+            for x in move:
+                print(x+'\n')
+        elif "HELLO" in data:
+            sys.stdout.write('I AM A\n\n')
+        elif 'YOU' in data:
+            sys.stdout.write('OK\n\n')
 
-    while True:
-        maze = get_maze()
-        start, meal = get_meal(maze)
-        # f = open('de', 'w')
-        # f.write(str(start))
-        move = find(maze, tuple(start), tuple(meal[1]))
-
-        for x in move:
-            print(x+'\n')
+        data = sys.stdin.readline()

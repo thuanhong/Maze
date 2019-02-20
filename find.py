@@ -1,9 +1,10 @@
 from math import sqrt
+import sys
 
 class node():
-    def __init__(self, parent, position):
+    def __init__(self, parent=None, pos=None):
         self.parent = parent
-        self.pos = position
+        self.pos = pos
 
     def __eq__(self, other):
         return self.pos == other.pos
@@ -42,33 +43,34 @@ def find_path(maze, start, end):
                 current = current.parent
             return path[::-1]
 
-        children = []
         for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
             temp_node = (current_pos.pos[0] + new[0], current_pos.pos[1] + new[1])
+            sys.stderr.write(str(temp_node))
             if maze[temp_node[0]][temp_node[1]] == '#':
+
                 continue
             new_node = node(current_pos, temp_node)
             if new_node not in closed_list:
                 open_list.append(new_node)
 
-def main():
-
-    maze = ['####################',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '#                  #',
-            '####################']
-
-    start = (2, 1)
-    end = (1, 12)
-
-    path = find_path(maze, start, end)
-    print(path)
-
-if __name__ == '__main__':
-    main()
+# def main():
+#
+#     maze = ['####################',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '#                  #',
+#             '####################']
+#
+#     start = (2, 1)
+#     end = (1, 12)
+#
+#     path = find_path(maze, start, end)
+#     print(path)
+#
+# if __name__ == '__main__':
+#     main()
