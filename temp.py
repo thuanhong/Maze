@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 
 class Node():
     """A node class for A* Pathfinding"""
@@ -57,7 +57,8 @@ def astar(maze, start, end):
 
         # Generate children
         children = []
-        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0)]: # Adjacent squares
+        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]: # Adjacent squares
+
             # Get node position
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
@@ -66,7 +67,7 @@ def astar(maze, start, end):
                 continue
 
             # Make sure walkable terrain
-            if maze[node_position[0]][node_position[1]] != '0':
+            if maze[node_position[0]][node_position[1]] != ' ':
                 continue
 
             # Create new node
@@ -95,3 +96,27 @@ def astar(maze, start, end):
 
             # Add the child to the open list
             open_list.append(child)
+
+
+def main():
+
+    maze = ['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','#',
+            '#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#']
+
+    start = (2, 2)
+    end = (2, 4)
+
+    path = astar(maze, start, end)
+    print(path)
+
+
+if __name__ == '__main__':
+    main()

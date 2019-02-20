@@ -3,7 +3,7 @@
 import sys
 import math
 from random import choice
-from temp import *
+from find import *
 
 def get_sring():
     data = sys.stdin.readline()
@@ -20,16 +20,19 @@ def get_sring():
 
 def get_meal(maze):
     meal = []
+    start = ''
     for x in range(len(maze)):
         for j, y in enumerate(maze[x]):
             try:
                 if y == 'o':
-                    meal.append([x,j])
+                    meal.append([x, j])
                 if y == 'A':
-                    meal.insert(0, [x, j])
+                    start = [x, j]
             except:
                 continue
-    return meal
+    f = open('de', 'w')
+    f.write(str(start) + '\n' + str(meal))
+    return start , meal
 
 # def get_pos_nearest(pos_A, list_meal):
 #     if distance(pos_A, list_meal[0]) > distance(pos_A, list_meal[1]):
@@ -51,36 +54,35 @@ def get_maze():
             count += 1
         output += maze + '\n'
         maze = input()
-
     return output.split('\n')[2:-1]
 
-def find_path (maze, pos_A, pos):
-    list = astar(maze, pos_A, pos)
+def find(maze, pos_A, pos):
+    list = find_path(maze, pos_A, pos)
+    f = open('debu', 'w')
+    f.write(str(list))
     current = pos_A
     output = []
-
     for x in list:
-        if x[0] == pos_A[0]:
-            if x[1] - pos_A[1] < 0:
-                output.append('MOVE LEFT')
-            else:
-                output.append('MOVE RIGHT')
+        if x[0] > pos_A[0]:
+            output.append('MOVE DOWN')
+        elif x[0] < pos_A[0]:
+            output.append('MOVE UP')
+        elif x[1] > pos_A[1]:
+            output.append('MOVE RIGHT')
         else:
-            if x[0] - pos_A[0] < 0:
-                output.append('MOVE UP')
-            else:
-                output.append('MOVE DOWN')
+            output.append('MOVE LEFT')
+        current = x
     return output
 
 if __name__ == '__main__':
     get_sring()
+
     while True:
         maze = get_maze()
-        meal = get_meal(maze)
-        start = meal[0]
-        meal.pop(0)
+        start, meal = get_meal(maze)
+        # f = open('de', 'w')
+        # f.write(str(start))
+        move = find(maze, tuple(start), tuple(meal[1]))
 
-        # get_pos_nearest([start_x, start_y], meal[0])
-        move = find_path(maze, start, meal[2])
         for x in move:
-            sys.stdin.write(x)
+            print(x+'\n')
