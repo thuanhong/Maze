@@ -4,24 +4,6 @@ import collections
 import string
 
 
-def player_coordinate(board, name='A'):
-    for row in range(len(board)):
-        for col in range(len(board[row])):
-            if board[row][col] == name:
-                player = [row, col]
-    return player
-
-
-def return_board():
-    board = []
-    while True:
-        k = sys.stdin.readline()
-        if k[0] != '#':
-            break
-        board.append(k)
-    return board
-
-
 def return_path(board, player):
     queue = collections.deque([[player]])
     seen = list(player)

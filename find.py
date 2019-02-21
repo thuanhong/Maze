@@ -27,7 +27,7 @@ def find_path(maze, start, end):
         current_pos = open_list[0]
         current_index = 0
 
-        for index, item in enumerate(open_list):
+        for index, item in enumerate(open_list): # find the point have coordinate nearest end_node
             if distance(current_pos.pos, end_node.pos) > distance(item.pos, end_node.pos):
                 current_pos = item
                 current_index = index
@@ -35,7 +35,7 @@ def find_path(maze, start, end):
         open_list.pop(current_index)
         closed_list.append(current_pos)
 
-        if current_pos == end_node:
+        if current_pos == end_node: # output path if find end_node
             path = []
             current = current_pos
             while current is not None:
@@ -43,34 +43,10 @@ def find_path(maze, start, end):
                 current = current.parent
             return path[::-1]
 
-        for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
+        for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]: # find 4 way to get position
             temp_node = (current_pos.pos[0] + new[0], current_pos.pos[1] + new[1])
-            sys.stderr.write(str(temp_node))
             if maze[temp_node[0]][temp_node[1]] == '#':
-
                 continue
             new_node = node(current_pos, temp_node)
             if new_node not in closed_list:
                 open_list.append(new_node)
-
-# def main():
-#
-#     maze = ['####################',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '#                  #',
-#             '####################']
-#
-#     start = (2, 1)
-#     end = (1, 12)
-#
-#     path = find_path(maze, start, end)
-#     print(path)
-#
-# if __name__ == '__main__':
-#     main()
