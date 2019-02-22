@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import sys
-import math
-from random import choice
 from find import *
 from time import time
+# from math import sqrt
 
+# def distance(curr, target):
+#     return sqrt((target[0] - curr[0])**2 + (target[1] - curr[1])**2)
 
 def get_meal(maze):
     '''
@@ -16,7 +17,7 @@ def get_meal(maze):
     for x in range(len(maze)):
         for j, y in enumerate(maze[x]):
             try:
-                if y == 'o':
+                if y == 'o' or y == '!':
                     meal.append([x, j])
                 if y == 'A':
                     start = [x, j]
@@ -53,6 +54,8 @@ def moved(path):
     '''
     convert from coordinate to step
     '''
+    f = open('debu', 'w')
+    f.write(str(path))
     if path[1][0] - path[0][0] == 1:
         return 'MOVE DOWN\n\n'
     elif path[1][0] - path[0][0] == -1:
@@ -69,9 +72,9 @@ if __name__ == '__main__':
         if 'MAZE' in data:
             maze = get_maze()
             start, meal = get_meal(maze)
-            target = get_pos_nearest(start, meal)
+            # target = get_pos_nearest(start, meal)
             started = time()  # start calculate time run
-            move = find_path(maze, tuple(start), tuple(target))  # find pathing
+            move = find_path(maze, tuple(start))  # find pathing
             sys.stderr.write(str(time()-started)+'\n')  # print time run
             sys.stdout.write(moved(move))  # print step
         elif "HELLO" in data:

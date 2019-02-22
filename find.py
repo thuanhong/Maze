@@ -14,46 +14,7 @@ class node():
 def distance(cur, goal):
     return sqrt((goal[0] - cur[0])**2 + (goal[1] - cur[1])**2)
 
-def find_path(board, player, end):
-    # declare start point vs end point
-    # start_node = node(None, start)
-    # end_node = node(None, end)
-    #
-    # # create two list emppty
-    # open_list = []
-    # closed_list = []
-    #
-    # open_list.append(start_node)
-    # # handle main
-    # while len(open_list) > 0:
-    #     current_pos = open_list[0]
-    #     current_index = 0
-    #
-    #     for index, item in enumerate(open_list): # find the point have coordinate nearest end_node
-    #         if distance(current_pos.pos, end_node.pos) > distance(item.pos, end_node.pos):
-    #             current_pos = item
-    #             current_index = index
-    #
-    #     open_list.pop(current_index)
-    #     closed_list.append(current_pos)
-    #
-    #     if current_pos == end_node: # output path if find end_node
-    #         path = []
-    #         current = current_pos
-    #         while current is not None:
-    #             path.append(current.pos)
-    #             current = current.parent
-    #         return path[::-1]
-    #
-    #     for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]: # find 4 way to get position
-    #         temp_node = (current_pos.pos[0] + new[0], current_pos.pos[1] + new[1])
-    #         if maze[temp_node[0]][temp_node[1]] == '#':
-    #             continue
-    #         new_node = node(current_pos, temp_node)
-    #         if new_node not in closed_list:
-    #             open_list.append(new_node)
-
-
+def find_path(board, player):
     queue = collections.deque([[player]])
     seen = list(player)
     while queue:
@@ -77,3 +38,22 @@ def find_path(board, player, end):
            board[pr][pc] not in string.ascii_uppercase:
             path = [player, [pr, pc]]
             break
+    return path
+
+
+# def main():
+#     maze = []
+#     f = open('new', 'r')
+#     maze = f.read().split('\n')[:-2]
+#
+#     move = find_path(maze, (1, 1), (37, 97))
+#     for x, i in enumerate(maze):
+#         for y in range(len(i)):
+#             if (x, y) in move:
+#                 print("\033[93m{}\033[00m" .format('O'), end = '')
+#             else:
+#                 print(maze[x][y], end='')
+#         print()
+#
+# if __name__ == '__main__':
+#     main()

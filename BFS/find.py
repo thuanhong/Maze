@@ -25,8 +25,7 @@ def find_path(maze, start):
 
         closed_list.append(current_pos)
 
-        if (maze[current_pos.pos[0]][current_pos.pos[1]] == '!' and
-           len(path) < 17)\
+        if maze[current_pos.pos[0]][current_pos.pos[1]] == '!' \
            or maze[current_pos.pos[0]][current_pos.pos[1]] == 'o':
             path = []
             current = current_pos
