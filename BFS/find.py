@@ -25,8 +25,19 @@ def find_path(maze, start):
 
         closed_list.append(current_pos)
 
-        if maze[current_pos.pos[0]][current_pos.pos[1]] == '!' \
-           or maze[current_pos.pos[0]][current_pos.pos[1]] == 'o':
+        if maze[current_pos.pos[0]][current_pos.pos[1]] == '!':
+            path = []
+            count = 0
+            current = current_pos
+            while current is not None:
+                path.append(current.pos)
+                current = current.parent
+                count += 1
+                if count == 16:
+                    break
+            if count <= 15:
+                return path[::-1]
+        elif maze[current_pos.pos[0]][current_pos.pos[1]] == 'o':
             path = []
             current = current_pos
             while current is not None:

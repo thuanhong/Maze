@@ -3,10 +3,6 @@
 import sys
 from find import *
 from time import time
-# from math import sqrt
-
-# def distance(curr, target):
-#     return sqrt((target[0] - curr[0])**2 + (target[1] - curr[1])**2)
 
 def get_meal(maze):
     '''
@@ -28,7 +24,10 @@ def get_meal(maze):
 
 def get_pos_nearest(pos_A, list_meal):
     '''
-    get coordinate of coin nearest player
+    get coordinate of coin nearest player# from math import sqrt
+
+# def distance(curr, target):
+#     return sqrt((target[0] - curr[0])**2 + (target[1] - curr[1])**2)
     '''
     min = list_meal[0]
     for x in list_meal:
@@ -72,7 +71,6 @@ if __name__ == '__main__':
         if 'MAZE' in data:
             maze = get_maze()
             start, meal = get_meal(maze)
-            # target = get_pos_nearest(start, meal)
             started = time()  # start calculate time run
             move = find_path(maze, tuple(start))  # find pathing
             sys.stderr.write(str(time()-started)+'\n')  # print time run
