@@ -1,5 +1,6 @@
 from math import sqrt
 from time import time
+from string import ascii_uppercase
 
 class node():
     def __init__(self, parent=None, pos=None):
@@ -31,7 +32,7 @@ def gbfs(maze, start, end):
                 current_index = index
 
         open_list.pop(current_index)
-        closed_list.append(current_pos)
+        maze[current_pos.pos[0]][current_pos.pos[1]] = '.'
 
         if current_pos == end_node: # output path if find end_node
             path = []
@@ -46,16 +47,53 @@ def gbfs(maze, start, end):
             try:
                 if maze[temp_node[0]][temp_node[1]] != '#':
                     new_node = node(current_pos, temp_node)
-                    if new_node not in closed_list:
+                    if maze[new_node.pos[0]][new_node.pos[1]] != '.':
                         open_list.append(new_node)
             except:
                 pass
 
+def bfs(maze, start):
+
+    start_node = node(None, start)
+
+    open_list = [start_node]
+
+    # handle main
+    while len(open_list) > 0:
+        current_pos = open_list.pop(0)
+
+        if maze[current_pos.pos[0]][current_pos.pos[1]] is '.':
+            continue
+
+        if maze[current_pos.pos[0]][current_pos.pos[1]] == 'o':
+            path = []
+            current = current_pos
+            while current is not None:
+                path.append(current.pos)
+                current = current.parent
+            return path[::-1]
+
+        maze[current_pos.pos[0]][current_pos.pos[1]] = '.'
+        for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
+            index_1 = current_pos.pos[0] + new[0]
+            index_2 = current_pos.pos[1] + new[1]
+            temp_node = (index_1, index_2)
+            if maze[temp_node[0]][temp_node[1]] != '#':
+                new_node = node(current_pos, temp_node)
+                if maze[new_node.pos[0]][new_node.pos[1]] != '.':
+                    open_list.append(new_node)
 
 def main():
     maze = []
     f = open('maze(L)1', 'r')
-    maze = f.read().split('\n')[:-1]
+    maze_temp = f.read().split('\n')[:-1]
+
+    for x in maze_temp:
+        temp = []
+        for y in x:
+            temp.append(y)
+        maze.append(temp)
+
     begin = time()
     move = gbfs(maze, (1, 1), (96, 97))
     print(str(time() - begin) + '\n')
@@ -63,6 +101,32 @@ def main():
         for y in range(len(i)):
             if (x, y) in move:
                 print('\x1b[6;30;42m{}\x1b[0m' .format(' '), end = '')
+            elif maze[x][y] is '.':
+                print('\x1b[6;30;41m{}\x1b[0m' .format(' '), end = '')
+            else:
+                print(maze[x][y], end='')
+        print()
+
+    maze.clear()
+    for x in maze_temp:
+        temp = []
+        for y in x:
+            temp.append(y)
+        maze.append(temp)
+
+    begin = time()
+    move = bfs(maze, (1, 1))
+    print(str(time() - begin) + '\n')
+    # for x in maze_temp:
+    #     for y in x:
+    #         print(y, end='')
+    #     print()
+    for x, i in enumerate(maze):
+        for y in range(len(i)):
+            if (x, y) in move:
+                print('\x1b[6;30;42m{}\x1b[0m' .format(' '), end = '')
+            elif maze[x][y] is '.':
+                print('\x1b[6;30;41m{}\x1b[0m' .format(' '), end = '')
             else:
                 print(maze[x][y], end='')
         print()

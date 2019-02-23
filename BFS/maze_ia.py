@@ -28,7 +28,13 @@ def get_maze():
         if data[0] != '#':
             break
         board.append(data)
-    return board
+    maze = []
+    for x in board:
+        temp = []
+        for y in x:
+            temp.append(y)
+        maze.append(temp)
+    return maze
 
 
 def moved(path):
