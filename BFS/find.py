@@ -1,4 +1,9 @@
+from string import ascii_uppercase
+
 class node():
+    '''
+    create a node and set current position and it parent position
+    '''
     def __init__(self, parent=None, pos=None):
         self.parent = parent
         self.pos = pos
@@ -8,17 +13,22 @@ class node():
 
 
 def find_path(maze, start):
+    '''
+    use BFS algorithm to find shortest way
+    '''
+    # declare start point
     start_node = node(None, start)
-
     open_list = [start_node]
 
     # handle main
     while len(open_list) > 0:
         current_pos = open_list.pop(0)
 
+        # check current position
         if maze[current_pos.pos[0]][current_pos.pos[1]] is '.':
             continue
 
+        # return path if found end point
         if maze[current_pos.pos[0]][current_pos.pos[1]] == 'o':
             path = []
             current = current_pos
@@ -27,12 +37,16 @@ def find_path(maze, start):
                 current = current.parent
             return path[::-1]
 
+        # the current position have checked
         maze[current_pos.pos[0]][current_pos.pos[1]] = '.'
+
+        # 
         for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
             index_1 = current_pos.pos[0] + new[0]
             index_2 = current_pos.pos[1] + new[1]
             temp_node = (index_1, index_2)
-            if maze[temp_node[0]][temp_node[1]] != '#':
+            if maze[temp_node[0]][temp_node[1]] != '#' or \
+                maze[temp_node[0]][temp_node[1]] in ascii_uppercase:
                 new_node = node(current_pos, temp_node)
                 if maze[new_node.pos[0]][new_node.pos[1]] != '.':
                     open_list.append(new_node)
