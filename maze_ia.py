@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from find import *
+from find import gbfs
 from time import time
+from string import ascii_uppercase
 
 def get_meal(maze):
     '''
@@ -13,7 +14,7 @@ def get_meal(maze):
     for x in range(len(maze)):
         for j, y in enumerate(maze[x]):
             try:
-                if y == 'o' or y == '!':
+                if y == 'o':
                     meal.append([x, j])
                 if y == 'A':
                     start = [x, j]
@@ -21,17 +22,16 @@ def get_meal(maze):
                 continue
     return start, meal
 
+def dist(start, current):
+    return abs(start[0] - current[0]) + abs(start[1] - current[1])
 
 def get_pos_nearest(pos_A, list_meal):
     '''
     get coordinate of coin nearest player# from math import sqrt
-
-# def distance(curr, target):
-#     return sqrt((target[0] - curr[0])**2 + (target[1] - curr[1])**2)
     '''
     min = list_meal[0]
     for x in list_meal:
-        if distance(pos_A, x) < distance(pos_A, min):
+        if dist(pos_A, x) < dist(pos_A, min):
             min = x
     return min
 
@@ -71,8 +71,9 @@ if __name__ == '__main__':
         if 'MAZE' in data:
             maze = get_maze()
             start, meal = get_meal(maze)
+            end = get_pos_nearest(start, meal)
             started = time()  # start calculate time run
-            move = find_path(maze, tuple(start))  # find pathing
+            move = gbfs(maze, tuple(start), tuple(end))  # find pathing
             sys.stderr.write(str(time()-started)+'\n')  # print time run
             sys.stdout.write(moved(move))  # print step
         elif "HELLO" in data:

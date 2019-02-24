@@ -1,17 +1,16 @@
-from math import sqrt
 from time import time
-from string import ascii_uppercase
 
 class node():
     def __init__(self, parent=None, pos=None):
         self.parent = parent
         self.pos = pos
-
+        self.g = 0
     def __eq__(self, other):
         return self.pos == other.pos
 
-def distance(cur, goal):
-    return sqrt((goal[0] - cur[0])**2 + (goal[1] - cur[1])**2)
+def distance(start, current, end):
+    h = abs(current.pos[0] - end.pos[0]) + abs(current.pos[1] - end.pos[1])
+    return h + current.g
 
 def gbfs(maze, start, end):
     start_node = node(None, start)
@@ -27,7 +26,7 @@ def gbfs(maze, start, end):
         current_index = 0
 
         for index, item in enumerate(open_list): # find the point have coordinate nearest end_node
-            if distance(current_pos.pos, end_node.pos) > distance(item.pos, end_node.pos):
+            if distance(start_node, current_pos, end_node) > distance(start_node, item, end_node):
                 current_pos = item
                 current_index = index
 
@@ -44,13 +43,11 @@ def gbfs(maze, start, end):
 
         for new in [(0, -1), (0, 1), (-1, 0), (1, 0)]: # find 4 way to get position
             temp_node = (current_pos.pos[0] + new[0], current_pos.pos[1] + new[1])
-            try:
-                if maze[temp_node[0]][temp_node[1]] != '#':
-                    new_node = node(current_pos, temp_node)
-                    if maze[new_node.pos[0]][new_node.pos[1]] != '.':
-                        open_list.append(new_node)
-            except:
-                pass
+            if maze[temp_node[0]][temp_node[1]] != '#':
+                new_node = node(current_pos, temp_node)
+                if maze[new_node.pos[0]][new_node.pos[1]] != '.':
+                    new_node.g = new_node.parent.g + 1
+                    open_list.append(new_node)
 
 def bfs(maze, start):
 
@@ -78,6 +75,7 @@ def bfs(maze, start):
             index_1 = current_pos.pos[0] + new[0]
             index_2 = current_pos.pos[1] + new[1]
             temp_node = (index_1, index_2)
+
             if maze[temp_node[0]][temp_node[1]] != '#':
                 new_node = node(current_pos, temp_node)
                 if maze[new_node.pos[0]][new_node.pos[1]] != '.':
@@ -117,10 +115,7 @@ def main():
     begin = time()
     move = bfs(maze, (1, 1))
     print(str(time() - begin) + '\n')
-    # for x in maze_temp:
-    #     for y in x:
-    #         print(y, end='')
-    #     print()
+
     for x, i in enumerate(maze):
         for y in range(len(i)):
             if (x, y) in move:
