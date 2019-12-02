@@ -16,8 +16,7 @@ def gbfs(maze, start, end):
     start_node = node(None, start)
     end_node = node(None, end)
 
-    open_list = []
-    closed_list = []
+    open_list = [
 
     open_list.append(start_node)
     # handle main
@@ -83,7 +82,7 @@ def bfs(maze, start):
 
 def main():
     maze = []
-    f = open('maze(L)1', 'r')
+    f = open('maze(L)2', 'r')
     maze_temp = f.read().split('\n')[:-1]
 
     for x in maze_temp:
